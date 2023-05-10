@@ -26,6 +26,7 @@ public class Main {
 			return s;
 		}
 		
+		//contiene anche lo step 2
 		if(numbers.getNumeri().length() > 1) {
 			int somma = 0;
 			String[] numeriString = numbers.getNumeri().split(",");
