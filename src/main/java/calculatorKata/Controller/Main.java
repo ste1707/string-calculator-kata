@@ -35,15 +35,26 @@ public class Main {
 			if(numbers.getNumeri().charAt(0) == '/' && numbers.getNumeri().charAt(1) == '/') {
 				
 				char delimitatore = numbers.getNumeri().charAt(2);
-				
+				int cont = 0;
+				ArrayList<String> numeriNegativi = new ArrayList<>();
 				int somma = 0;
 				String[] numeriString = numbers.getNumeri().split("(?<=^.{3})");
 			
 				for (int i = 1; i < numeriString.length; i++) {
 					String[] numeriString2 = numeriString[i].split("[,\n"+delimitatore+"]");
 					for (String string : numeriString2) {
+						if(Integer.parseInt(string) < 0) {
+							cont++;
+							numeriNegativi.add(string);
+						}
+						if(Integer.parseInt(string) > 1000) {
+							continue;
+						}
 						somma += Integer.parseInt(string);
 					}					
+				}
+				if(cont > 0) {
+					throw new ApiRequestException("negatives not allowed: " + numeriNegativi);
 				}
 				Somma s = new Somma(somma);
 				return s;
@@ -56,6 +67,9 @@ public class Main {
 				if(Integer.parseInt(string) < 0) {
 					cont++;
 					numeriNegativi.add(string);
+				}
+				if(Integer.parseInt(string) > 1000) {
+					continue;
 				}
 				somma += Integer.parseInt(string);
 			}
