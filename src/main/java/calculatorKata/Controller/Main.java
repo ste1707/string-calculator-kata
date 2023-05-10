@@ -2,6 +2,9 @@ package calculatorKata.Controller;
 
 
 
+import calculatorKata.Exception.*;
+
+import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import calculatorKata.Entity.Numeri;
 import calculatorKata.Entity.Somma;
+
 
 @RestController
 public class Main {
@@ -46,8 +50,17 @@ public class Main {
 			}
 			int somma = 0;
 			String[] numeriString = numbers.getNumeri().split("[,\n]");
+			int cont = 0;
+			ArrayList<String> numeriNegativi = new ArrayList<>();
 			for (String string : numeriString) {
+				if(Integer.parseInt(string) < 0) {
+					cont++;
+					numeriNegativi.add(string);
+				}
 				somma += Integer.parseInt(string);
+			}
+			if(cont > 0) {
+				throw new ApiRequestException("negatives not allowed: " + numeriNegativi);
 			}
 			Somma s = new Somma(somma);
 			return s;
